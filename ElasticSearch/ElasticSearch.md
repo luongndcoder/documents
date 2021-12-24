@@ -157,4 +157,4 @@
 * Bool query in filter context
     * Sài thằng này thì nhớ nếu như có cái mệnh đề `should` thì trong đó phải tồn tại ít nhất một mệnh đề `should` là bắt buộc phù hợp.
 
-*** À thằng này là tôi bếch từ [Viblo.asia](https://viblo.asia/p/query-dsl-trong-elasticsearch-Eb85oJq2l2G) về ae có thể bơi vào đây để xem nội dung gốc nhé. ***
+## À thằng này là tôi bếch từ [Viblo.asia](https://viblo.asia/p/query-dsl-trong-elasticsearch-Eb85oJq2l2G) về ae có thể bơi vào đây để xem nội dung gốc nhé.
