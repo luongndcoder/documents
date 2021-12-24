@@ -75,6 +75,7 @@
             }
         } 
     }`
+    * Ae muốn query list full_name có thể dùng: `{"terms": {"email": ["luongnd@gmail.com", "thiennd@gmail.com"]}}`
  * Kết quả trả về những record có full_name là : **Nguyễn Danh Lương**
 
 ### 5. Range Query
@@ -155,3 +156,5 @@
     * Lấy tất cả thằng nào phù hợp với `user_name` bằng "luongndcoder" với `gender` bằng "male" với `age` không nằm trong khoảng 21 đến 27 với `code` phải bằng 110 hoặc 113.
 * Bool query in filter context
     * Sài thằng này thì nhớ nếu như có cái mệnh đề `should` thì trong đó phải tồn tại ít nhất một mệnh đề `should` là bắt buộc phù hợp.
+
+*** À thằng này là tôi bếch từ [Viblo.asia](https://viblo.asia/p/query-dsl-trong-elasticsearch-Eb85oJq2l2G) về ae có thể bơi vào đây để xem nội dung gốc nhé. ***
