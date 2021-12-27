@@ -125,7 +125,7 @@
     * **must**: Phải phù hợp với tất cả điều kiện và đóng góp vào điểm số.
     * **filter**: Giống với **must** nhưng bỏ qua điểm số.
     * **should**: Chỉ cần phù hợp với một trong các điều kiện.
-    * **must_not**: Ngược lại với **should**, phải không phù hợp với tất cả các điều kiện.
+    * **must_not**: Ngược lại với **must**, phải không phù hợp với tất cả các điều kiện.
 * Ex: `{"query": {
     "bool": {
         "must": {
