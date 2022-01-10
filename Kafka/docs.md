@@ -27,4 +27,9 @@
 
 ### Parsistence data trong Kafka
 * Kafka lưu trữ tất cả message vào disk(không hề lưu trên RAM) và được sắp xếp có thứ tự trong cấu trúc log cho phép kafka tận dụng tối đa khả năng đọc và ghi lên disk một cách tuần tự.
-Nó là một cách lựa chọn khá phổ biến để lưu trữ dữ iệu trên disk mà vẫn có thể sử dụng tối đa hoá hiệu năng, 
+Nó là một cách lựa chọn khá phổ biến để lưu trữ dữ iệu trên disk mà vẫn có thể sử dụng tối đa hoá hiệu năng, có một số lý do chính dưới đây:
+    * Kafka có một giao thức mà nhóm các message lại với nhau. Điều này cho phép các request network nhóm các message lại với nhau, giúp giảm thiểu chi phí sử dụng tài nguyên mạng, giúp giảm thiểu chi phí sử dụng tài nguyên mạng, server, gom các message lại thành một cục và consumer sẽ tìm nạp một khối messsage cùng một lúc - do đó sẽ giảm tải disk cho hệ điều hành.
+    * Kafka phụ thuộc khá nhiều và pagecache của hệ điều hành cho việc lưu trữ dữ liệu, sử dụng RAM trên máy một cách hiệu quả.
+    * Kafka lưu trữ các messages dưới định dạng nhị phân xuyên suốt quá trình (producer > broker > consumer), làm cho nó có thể tận dụng tối ưu hoá khả năng zero-copy. Nghĩ là khi hệ điều hành copy dữ liệu từ pagecahce trực tiếp sang socket, hoàn toàn bỏ qua ứng dụng trung gian là kafka.
+    * Đọc/ghi dữ liệu tuyến tính trên disk nhanh. Vấn đề làm cho disk chậm hiện nay thường là do quá trình tìm kiếm trên disk nhiều lần. Kafka đọc và ghi trên disk tuyến tính, do đó nó có thể tận dụng tối đá hoá hiệu suất trên disk.
+### Consumer và Consumer Group 
