@@ -33,3 +33,42 @@ Nó là một cách lựa chọn khá phổ biến để lưu trữ dữ iệu t
     * Kafka lưu trữ các messages dưới định dạng nhị phân xuyên suốt quá trình (producer > broker > consumer), làm cho nó có thể tận dụng tối ưu hoá khả năng zero-copy. Nghĩ là khi hệ điều hành copy dữ liệu từ pagecahce trực tiếp sang socket, hoàn toàn bỏ qua ứng dụng trung gian là kafka.
     * Đọc/ghi dữ liệu tuyến tính trên disk nhanh. Vấn đề làm cho disk chậm hiện nay thường là do quá trình tìm kiếm trên disk nhiều lần. Kafka đọc và ghi trên disk tuyến tính, do đó nó có thể tận dụng tối đá hoá hiệu suất trên disk.
 ### Consumer và Consumer Group 
+* Consumer đọc các messages từ bất kỳ partition nào, cho phép bạn mở rộng lượng message được sử dụng tương tự như cách các producer cung cấp message.
+* Consumer cũng được tổ chức thành các consumer groups cho một topic cụ thể - mỗi consumer bên trong group đọc message từ một partition duy nhất, để trách việc 2 consumer xử lý đọc cùng một message 2 lần và toàn bộ group xử lý tất cả các message từ toàn bộ topic.
+    * Nếu bạn có số consumer > số partition, khi đó một số consumer sẽ ở chế độ rảnh rỗi bởi vì chúng không có partition nào để xử lý.
+    * Nếu bạn có số partition > số consumer, khi đó consumer sẽ nhận các message từ nhiều partition.
+    * Nếu bạn có số partition = số partition, mỗi consumer sẽ đọc message theo thứ tự 1 partition.
+* Xem qua hình ảnh bên dưới:
+![alt](https://vsudo.net/blog/wp-content/uploads/2019/12/group-consumer.jpg)
+
+* Kafka tuân thủ theo quy tắc được cung cấp bởi broker và consumer. Nghĩa là kafka không theo dõi các record được đọc bởi consumer và do đó không biết gì về hành vi của consumer. Việc giữ lại các messages trong một khoảng thời gian được cấu hình trước và nó tuỳ thuộc vào consumer, để điều chỉnh thời gian sao cho phù hợp. Bản thân consumer sẽ thăm dò xem Kafka có message nào mới hay không và cho kafka biết những record nào chúng muốn đọc. Điều này cho phép chúng tăng/ giảm offset mà consumer muốn, do đó nó có thể đọc lại các message đã được đọc rồi và tái xử lý các sự kiện trong trường hợp gặp sự cố.
+* Ví dụ: Nếu Kafka được cấu hình để giữ lại các messages tồn tại trong một ngày và consumer bị down lâu hơn 1 ngày, khi đó consumer sẽ mất message. Tuy nhiên, nếu consumer chỉ bị down trong khoảng 1 giờ đồng hồ, khi đó nó hoàn toàn có thể bắt đầu đọc lại message từ offset mới nhất.
+
+### Vai trò của Zookeeper
+* Zookeeper đóng vai trò là nơi lưu trữ dữ liệu phân tán dạng key-value. Nó được tối ưu hoá cho tác vụ đọc nhanh nhưng ghi chậm. Kafka sử dụng Zookeeper cũng được thiết kế cho khả năng chịu lỗi cao, do đó Kafka phụ thuộc khá nhiều vào Zookeeper. 
+* Nó cũng được sử dụng để lưu trữ tất cả metadata như là:
+    * Offset cho mỗi partiotion của consumer group 
+    * ACL (Access control list) - được sử dụng cho việc giới hạn truy cập/ uỷ quyền.
+    * Quota của consumer/producer - số lượng messsage tối đa mỗi giây
+    * Partition Leader và trạng thái của chúng
+
+* Producer và consumer không tương tác trực tiếp với Zookeeper để biết leader của partition hay những metadata khác, thay vào đó chúng sẽ truy vấn metadata tới Kafka broker - sau đó Kafka tương tác với Zookeeper và gửi phản hồi metadata về lại cho chúng.
+
+### Kết luận
+Kafka cho phép có một lượng clowns các messages đi qua một phương tiện tập trung và lưu trữ chúng mà không cần phải lo lắng gì về những vấn đề như hiệu suất hay mất mát dữ liệu. Kafka có thể là thành phân trung tâm trong mô hình kiến trúc hướng sự kiện (event-driven) và cho phép bạn phân tách giữa ứng dụng này với ứng dụng khác.
+
+## Các câu hỏi thường gặp
+* Kafka có khả năng gì?
+    * Thể hiện 3 khả năng chính như sau:
+        * Cơ chế publish/subcribe tương tự như các hệ thống message queue doanh nghiệp khác.
+        * Cơ chế lưu trữ stream các bản ghi trên nhiều node broker khác nhau, giúp khắc phục lỗi xảy ra.
+        * Xử lý stream các bản ghi ngay khi nó vừa đến.
+* Các thành phần chính trong Kafka là gì?
+    * Có 4 thành phần khác nhau như sau:
+        * Kafka Broker
+        * Zookeeper
+        * Producer
+        * Consumer
+* Mục đích chính khi sử dụng Apache Kafka là gì?
+    * Sử dụng để theo dõi lưu lượng truy cập, giám sát web server.
+    * Xử lý sự kiện
