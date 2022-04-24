@@ -21,3 +21,12 @@
     + Restart container : docker restart container_name
     + Remove container: docker rm container_name_1 container_name_2 container_name_3
     + Rest container : docker run -d -p 5000:5000 --name rest-server container_name
+
+    + docker logs [-f^6] container: hiển thị log container output (sdtdout + stderr)
+    + docker diff container: hiển thị các differance của image
+
+
+- Một số lưu ý:
+    + Khi cài docker docker sẽ tự khởi tạo một card mạng là bridge -> thực hiện kết nối với card mạng thật(wifi, ethernet) -> đi ra ngoài internet
+
+- 
