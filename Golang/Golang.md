@@ -62,3 +62,79 @@
     !true	false
     !false	true
     ```
+
+### Biến 
+- Cái này thì ai học qua một ngôn ngữ lập trình rồi thì cũng đã biết hết rồi. Đại ý nó là nơi lưu trữ dữ liệu, một biến gồm có 2 phần là **tên biến** và **kiểu dữ liệu**.
+- Các quy tắc tạo ra một biến:
+    ```golang
+    package main
+    
+    func main(){
+        // Gán thẳng dữ liệu vào biến
+        var fullname string = "Hello Luong"
+        
+        // Hoặc có thể tạo biến rồi gán sau cũng được
+        var fullname string
+        fullname = "Hello Luong"
+
+        // Go cũng hỗ trợ Dynamic Variable
+        first_name := "Luong"
+
+        // Hoặc có thể khai báo nhiều biến trên 1 dòng
+        var (first_name, last_name, full_name)
+    }
+    ```
+
+### Lệnh điều khiển
+- Lệnh for:
+    ```golang
+    package main
+    import "fmt"
+
+    var index int = 1
+    for index <= 10 {
+        fmt.Println(index)
+        index = index + 1
+    }
+    
+    // index <= 10: Điều kiện để lặp
+    // Hoặc ta cũng có thể viết như này (Giống y chang JS :D)
+    for i := 1; i <= 10: i++ {
+        fmt.Println(i)
+    }
+    // Thằng golang này để lặp thì chỉ có mỗi lệnh for này thôi
+    // Golang ko support while, do, until, foreach đâu :)))
+    ```
+- Lệnh if:
+    ```golang
+    package main
+    
+    import "fmt"
+
+    func main() {
+        for i:= 1; i<= 10; i++ {
+            if i % 2 == 0 {
+                fmt.Println(i, "chan")
+            } else {
+                fmt.Println(i, "le")
+            }
+        }
+    }
+    // Nếu chia hết cho 2 là chẵn, ngược lại là lẻ (Ez :D)
+    // Nó còn in cả index với mỗi lần loop đấy :D
+    ```
+- Lệnh Switch:
+    - **if** xong lại **else if** tầm chục cái cũng chán và nhìn code xấu voãi, thằng này sinh ra để vứt cái **if else** đi cho code đẹp :D.
+    ```golang
+    package main
+    import "fmt"
+
+    func main(){
+        switch first_name {
+            case "Luong" : fmt.Println("Luong den")
+            case "Thai": fmt.Println("Thai dui")
+            case "Thien": fmt.Println("Thien cu")
+            default: fmt.Println("Thang khac cut x3.14")
+        }
+    }
+    ```
