@@ -57,3 +57,10 @@
         
         {"messge":"Pong"}%
         ```
+        - Run chế độ hot reload trên Golang.
+            - Bạn phải cài **nodeJS** rồi trên chạy 2 câu lệnh dưới 
+            ```bash
+            $ npm install -g nodemon
+            $ nodemon --exec go run main.go --signal SIGTER 
+            ```
+        

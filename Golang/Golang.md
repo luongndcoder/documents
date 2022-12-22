@@ -138,3 +138,15 @@
         }
     }
     ```
+- Các lệnh, biến khác trong Golang:
+    - defer: Trì hoãn việc thực thi một hàm cho đến khi hàm xung quanh trả về.
+    ```golang
+    // Pass a context with a timeout to tell a blocking function that it
+	// should abandon its work after the timeout elapses.
+    // Việc hủy ngữ cảnh này sẽ giải phóng các tài nguyên được liên kết với nó, vì vậy mã sẽ gọi hủy ngay khi các hoạt động chạy trong Ngữ cảnh này hoàn tất
+	ctx, cancel := context.WithTimeout(context.Background(), shortDuration)
+	defer cancel()
+    ```
+    ```env
+    MONGO_URI=mongodb://sale:sale123@mongo3.mobio.dev:27017/sale?directConnection=true // Nếu như là 1 cụm cluster
+    ```
